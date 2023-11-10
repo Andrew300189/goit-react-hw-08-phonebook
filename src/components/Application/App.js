@@ -1,4 +1,3 @@
-// App.js
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -7,7 +6,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from '../../redux/store';
 import { loginSuccess } from '../../redux/authSlice';
 import Navigation from './Navigation';
-import UserMenu from './components/UserMenu';
+import UserMenu from '../UserMenu/UserMenu';
 import Registration from '../Registration/Registration';
 import Login from '../Login/Login';
 import ContactForm from '../ContactForm/ContactForm';

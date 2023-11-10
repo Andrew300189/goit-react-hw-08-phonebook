@@ -1,51 +1,42 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
+import UserMenu from './UserMenu'; // Импортируем компонент UserMenu
 
 const Navigation = () => {
-  const handleLogout = async () => {
-    try {
-      await axios.post('https://connections-api.herokuapp.com/users/logout', null, {
-        headers: {
-          Authorization: 'Bearer jwt_token',
-        },
-      });
-
-      console.log('User logged out successfully');
-      
-    } catch (error) {
-      console.error('Logout failed:', error.message);
-    }
-  };
 
   return (
-    <nav>
-      <ul>
-        <li>
-          <NavLink to="/" exact activeClassName="active">
-            Home
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/register" activeClassName="active">
-            Registration
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/login" activeClassName="active">
-            Login
-          </NavLink>
-        </li>
-        <li>
-          <NavLink to="/contacts" activeClassName="active">
-            Contacts
-          </NavLink>
-        </li>
-        <li>
-          <button onClick={handleLogout}>Logout</button>
-        </li>
-      </ul>
-    </nav>
+    <div>
+      <h1>Welcome to the Contacts App</h1>
+      <p>Please login or register to access your contacts.</p>
+      <nav>
+        <ul>
+          <li>
+            <NavLink to="/" exact activeClassName="active">
+              Home
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/register" activeClassName="active">
+              Registration
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/login" activeClassName="active">
+              Login
+            </NavLink>
+          </li>
+          <li>
+            <NavLink to="/contacts" activeClassName="active">
+              Contacts
+            </NavLink>
+          </li>
+          <li>
+            {/* Используем кнопку logout из UserMenu */}
+            <UserMenu />
+          </li>
+        </ul>
+      </nav>
+    </div>
   );
 };
 
