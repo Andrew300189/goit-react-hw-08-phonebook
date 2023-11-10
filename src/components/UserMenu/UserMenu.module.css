@@ -1,0 +1,9 @@
+/* Add these styles to your CSS module or stylesheet */
+.user-menu-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .welcome-message {
+    margin-right: 10px;
+  }

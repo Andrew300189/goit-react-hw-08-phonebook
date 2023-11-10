@@ -4,20 +4,16 @@ import {
   deletePrivateContact,
   fetchPrivateContacts,
 } from '../../redux/contactsSlice';
-import { selectContacts, selectFilter } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
+import styles from './ContactList.module.css';
 
 function ContactList() {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
-  // const filter = useSelector(selectFilter);
 
   useEffect(() => {
     dispatch(fetchPrivateContacts());
   }, [dispatch]);
-
-  // const filteredContacts = contacts.filter(contact =>
-  //   contact.name.toLowerCase().includes(filter.toLowerCase())
-  // );
 
   const handleDeleteContact = id => {
     dispatch(deletePrivateContact(id));
@@ -25,12 +21,12 @@ function ContactList() {
 
   return (
     <div>
-      <ul>
-        {contacts.map(contact => (
-          <li key={contact.id} className="contact-item">
+      <ul className={styles.contactList}>
+        {contacts.map((contact) => (
+          <li key={contact.id} className={styles.contactItem}>
             {contact.name}: {contact.number}
             <button
-              className="delete-button"
+              className={styles.deleteButton}
               onClick={() => handleDeleteContact(contact.id)}
             >
               Delete
@@ -40,6 +36,6 @@ function ContactList() {
       </ul>
     </div>
   );
-}
+};
 
 export default ContactList;

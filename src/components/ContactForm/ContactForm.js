@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addPrivateContact } from '../../redux/contactsSlice';
 import { selectContacts } from 'redux/selectors';
 import ContactList from 'components/ContactList/ContactList';
+import styles from './ContactForm.module.css';
 
 function ContactForm() {
   const dispatch = useDispatch();
@@ -35,9 +36,9 @@ function ContactForm() {
   };
 
   return (
-    <div className="container">
-      <form onSubmit={handleSubmit} className="form">
-        <label htmlFor="name" className="form-label">
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <label htmlFor="name" className={styles.formLabel}>
           Name
         </label>
         <input
@@ -46,9 +47,9 @@ function ContactForm() {
           name="name"
           value={name}
           onChange={e => setName(e.target.value)}
-          className="form-input"
+          className={styles.formInput}
         />
-        <label htmlFor="number" className="form-label">
+        <label htmlFor="number" className={styles.formLabel}>
           Number
         </label>
         <input
@@ -57,9 +58,9 @@ function ContactForm() {
           name="number"
           value={number}
           onChange={e => setNumber(e.target.value)}
-          className="form-input"
+          className={styles.formInput}
         />
-        <button type="submit" className="form-button">
+        <button type="submit" className={styles.formButton}>
           Add contact
         </button>
       </form>

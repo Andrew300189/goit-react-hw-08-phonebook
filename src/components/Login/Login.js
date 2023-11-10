@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../../redux/authSlice';
+import { loginUser } from '../../redux/userSlice';
+import styles from './Login.module.css';
 
-const LoginForm = ({ onClose }) => {
+const Login = () => {
   const history = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,48 +20,45 @@ const LoginForm = ({ onClose }) => {
         return;
       }
 
-      const response = await axios.post('https://connections-api.herokuapp.com/users/login', {
+      const userData = {
         email,
         password,
-      });
+      };
 
-      if (response.status === 200) {
-        onClose({
-          user: {
-            name: response.data.name,
-            email: response.data.email,
-          },
-          token: 'jwt_token',
-        });
+      const action = await dispatch(loginUser(userData));
 
-        history.push('/contacts');
+      if (loginUser.fulfilled.match(action)) {
+        const response = action.payload;
+
+        console.log(response);
+
+        history.push('/contacts'); 
       } else {
-        console.error('Login failed. Unexpected response status:', response.status);
+        console.error('Login failed. Unexpected response status:', action.error.message);
       }
     } catch (error) {
       console.error('Login failed:', error.message);
-
     }
   };
 
   return (
-    <div>
+    <div className={styles.form}>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <label>
-          Email:
+        <label className={styles.label}>
+          Email
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </label>
         <br />
-        <label>
-          Password:
+        <label className={styles.label}>
+          Password
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </label>
         <br />
-        <button type="submit">Login</button>
+        <button type="submit" className={styles.button}>Login</button>
       </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default Login;

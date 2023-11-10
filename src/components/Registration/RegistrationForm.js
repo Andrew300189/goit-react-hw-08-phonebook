@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { register } from 'redux/authSlice';
+import styles from './RegistrationForm.module.css';
 
 const RegistrationForm = () => {
   const dispatch = useDispatch();
@@ -22,11 +23,11 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div>
+    <div className={styles.form}>
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
-        <label>
-          Name:
+        <label className={styles.label}>
+          Name
           <input
             type="text"
             value={name}
@@ -34,8 +35,8 @@ const RegistrationForm = () => {
           />
         </label>
         <br />
-        <label>
-          Email:
+        <label className={styles.label}>
+          Email
           <input
             type="email"
             value={email}
@@ -43,8 +44,8 @@ const RegistrationForm = () => {
           />
         </label>
         <br />
-        <label>
-          Password:
+        <label className={styles.label}>
+          Password
           <input
             type="password"
             value={password}
@@ -52,7 +53,9 @@ const RegistrationForm = () => {
           />
         </label>
         <br />
-        <button type="submit">Register</button>
+        <button type="submit" className={styles.button}>
+          Register
+        </button>
       </form>
     </div>
   );

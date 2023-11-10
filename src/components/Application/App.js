@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import Navigation from './Navigation';
+import Navigation from '../Navigation/Navigation';
 import UserMenu from '../UserMenu/UserMenu';
 import Registration from '../Registration/Registration';
 import Login from '../Login/Login';

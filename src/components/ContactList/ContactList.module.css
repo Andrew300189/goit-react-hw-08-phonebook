@@ -1,26 +1,23 @@
-/* .contact-item {
-    font-size: 20px;
-  }
-  
-  .contact-item:not(:last-child) {
-    margin-bottom: 12px;
-  }
-  
-  .delete-button {
-    width: 70px;
-    margin-left: 10px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    border-radius: 5px;
-    border-color: #ccc;
-  }
-  
-  .delete-button:hover {
-    background-color: rgb(107, 207, 235);
-    color: white;
-  }
-  
-  .delete-button:active {
-    background-color: blue;
-    color: white;
-  }
-   */
+.contactList {
+  list-style: none;
+  padding: 0;
+  margin-left: 20px;
+}
+
+.contactItem {
+  margin-bottom: 10px;
+}
+
+.deleteButton {
+  background-color: #f44336;
+  color: white;
+  padding: 5px 10px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.deleteButton:hover {
+  background-color: #d32f2f;
+}
