@@ -1,61 +1,52 @@
 import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-const initialState = {
-  user: null,
-  token: null,
-  isLoggedIn: false,
-  loading: false,
-  error: null,
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com/';
+
+// Utility to add JWT
+const setAuthHeader = token => {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
+
+// Utility to remove JWT
+const clearAuthHeader = () => {
+  axios.defaults.headers.common.Authorization = '';
+};
+
+export const register = createAsyncThunk(
+    'auth/register',
+    async (credentials, thunkAPI) => {
+      try {
+        const res = await axios.post('/users/signup', credentials);
+        // After successful registration, add the token to the HTTP header
+        setAuthHeader(res.data.token);
+        return res.data;
+      } catch (error) {
+        return thunkAPI.rejectWithValue(error.message);
+      }
+    }
+  );
+
+  const initialState = {
+    user: { name: null, email: null },
+    token: null,
+    isLoggedIn: false,
+    isRefreshing: false,
+  };
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    loginStart(state) {
-      state.loading = true;
-    },
-    loginSuccess(state, action) {
-      state.loading = false;
-      state.user = action.payload.user;
+  extraReducers:(builder)=>{
+builder.addCase(register.fulfilled, (state,action)=>{
+    state.user = action.payload.user;
       state.token = action.payload.token;
       state.isLoggedIn = true;
-      state.error = null;
-    },
-    loginFailure(state, action) {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    logoutStart(state) {
-      state.loading = true;
-    },
-    logoutSuccess(state) {
-      state.loading = false;
-      state.user = null;
-      state.token = null;
-      state.isLoggedIn = false;
-      state.error = null;
-    },
-    logoutFailure(state, action) {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    updateUserStart(state) {
-      state.loading = true;
-    },
-    updateUserSuccess(state, action) {
-      state.loading = false;
-      state.user = action.payload.user;
-      state.error = null;
-    },
-    updateUserFailure(state, action) {
-      state.loading = false;
-      state.error = action.payload;
-    },
-    clearError(state) {
-      state.error = null;
-    },
-  },
+})
+  }
+
+  
 });
 
 export const {

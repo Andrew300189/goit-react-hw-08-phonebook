@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from '../../redux/contactsSlice';
+import { addPrivateContact } from '../../redux/contactsSlice';
 import { selectContacts } from 'redux/selectors';
 
 function ContactForm() {
@@ -27,7 +27,7 @@ function ContactForm() {
       return;
     }
 
-    dispatch(addContact({ name, number }))
+    dispatch(addPrivateContact({ name, number }))
       .unwrap()
       .then(() => {
         alert('Contact added successfully!');
