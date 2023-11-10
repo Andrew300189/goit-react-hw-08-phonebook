@@ -1,19 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const BASE_URL = 'https://653e5e66f52310ee6a9ae353.mockapi.io/contacts';
+const BASE_URL = 'https://connections-api.herokuapp.com/docs';
 
 const initialState = {
-    items: [],
-    filter: '',
-    isLoading: false,
-    error: null,
+  items: [],
+  isLoading: false,
+  error: null,
 };
 
-export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
+export const fetchPrivateContacts = createAsyncThunk('privateContacts/fetchAll', async () => {
   try {
     const response = await fetch(`${BASE_URL}/contacts`);
     if (!response.ok) {
-      throw new Error('Failed to fetch contacts');
+      throw new Error('Failed to fetch private contacts');
     }
     const data = await response.json();
     return data;
@@ -22,7 +21,7 @@ export const fetchContacts = createAsyncThunk('contacts/fetchAll', async () => {
   }
 });
 
-export const addContact = createAsyncThunk('contacts/addContact', async (contact) => {
+export const addPrivateContact = createAsyncThunk('privateContacts/addContact', async (contact) => {
   try {
     const response = await fetch(`${BASE_URL}/contacts`, {
       method: 'POST',
@@ -32,7 +31,7 @@ export const addContact = createAsyncThunk('contacts/addContact', async (contact
       body: JSON.stringify(contact),
     });
     if (!response.ok) {
-      throw new Error('Failed to add contact');
+      throw new Error('Failed to add private contact');
     }
     const data = await response.json();
     return data;
@@ -41,13 +40,13 @@ export const addContact = createAsyncThunk('contacts/addContact', async (contact
   }
 });
 
-export const deleteContact = createAsyncThunk('contacts/deleteContact', async (id) => {
+export const deletePrivateContact = createAsyncThunk('privateContacts/deleteContact', async (id) => {
   try {
     const response = await fetch(`${BASE_URL}/contacts/${id}`, {
       method: 'DELETE',
     });
     if (!response.ok) {
-      throw new Error('Failed to delete contact');
+      throw new Error('Failed to delete private contact');
     }
     return id;
   } catch (error) {
@@ -55,56 +54,85 @@ export const deleteContact = createAsyncThunk('contacts/deleteContact', async (i
   }
 });
 
-const contactsSlice = createSlice({
-  name: 'contacts',
+export const updatePrivateContact = createAsyncThunk('privateContacts/updateContact', async ({ id, updatedData }) => {
+  try {
+    const response = await fetch(`${BASE_URL}/contacts/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedData),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to update private contact');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
+const privateContactsSlice = createSlice({
+  name: 'privateContacts',
   initialState,
   reducers: {
-    updateFilter(state, action) {
-      state.filter = action.payload;
-    },
+    
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchContacts.pending, (state) => {
+      .addCase(fetchPrivateContacts.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchContacts.fulfilled, (state, action) => {
+      .addCase(fetchPrivateContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload;
       })
-      .addCase(fetchContacts.rejected, (state, action) => {
+      .addCase(fetchPrivateContacts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
-      .addCase(addContact.pending, (state) => {
+      .addCase(addPrivateContact.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(addContact.fulfilled, (state, action) => {
+      .addCase(addPrivateContact.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items.push(action.payload);
       })
-      .addCase(addContact.rejected, (state, action) => {
+      .addCase(addPrivateContact.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
-      .addCase(deleteContact.pending, (state) => {
+      .addCase(deletePrivateContact.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(deleteContact.fulfilled, (state, action) => {
+      .addCase(deletePrivateContact.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = state.items.filter(
-          (contact) => contact.id !== action.payload
-        );
+        state.items = state.items.filter((contact) => contact.id !== action.payload);
       })
-      .addCase(deleteContact.rejected, (state, action) => {
+      .addCase(deletePrivateContact.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(updatePrivateContact.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(updatePrivateContact.fulfilled, (state, action) => {
+        state.isLoading = false;
+        const updatedContact = action.payload;
+        state.items = state.items.map((contact) => {
+          return contact.id === updatedContact.id ? updatedContact : contact;
+        });
+      })
+      .addCase(updatePrivateContact.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
   },
 });
 
-export const { updateFilter } = contactsSlice.actions;
-export default contactsSlice.reducer;
+export default privateContactsSlice.reducer;
