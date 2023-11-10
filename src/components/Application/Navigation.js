@@ -6,8 +6,6 @@ const Navigation = () => {
 
   return (
     <div>
-      <h1>Welcome to the Contacts App</h1>
-      <p>Please login or register to access your contacts.</p>
       <nav>
         <ul>
           <li>
@@ -23,11 +21,6 @@ const Navigation = () => {
           <li>
             <NavLink to="/login" activeClassName="active">
               Login
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/contacts" activeClassName="active">
-              Contacts
             </NavLink>
           </li>
           <li>

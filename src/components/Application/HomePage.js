@@ -1,11 +1,23 @@
+const styles = {
+  container: {
+    minHeight: 'calc(100vh - 50px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    fontWeight: 500,
+    fontSize: 48,
+    textAlign: 'center',
+  },
+};
 
-import React from 'react';
-
-const HomePage = () => (
-  <div>
-    <h1>Welcome to the Contacts App</h1>
-    <p>Please login or register to access your contacts.</p>
-  </div>
-);
-
-export default HomePage;
+export default function Home() {
+  return (
+    <div style={styles.container}>
+      <h1 style={styles.title}>
+        Contacts App welcome page{' '}
+      </h1>
+    </div>
+  );
+}
