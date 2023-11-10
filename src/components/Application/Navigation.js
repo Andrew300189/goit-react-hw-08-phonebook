@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import UserMenu from '../UserMenu/UserMenu'; // Импортируем компонент UserMenu
+import UserMenu from '../UserMenu/UserMenu';
 
 const Navigation = () => {
 
@@ -31,7 +31,6 @@ const Navigation = () => {
             </NavLink>
           </li>
           <li>
-            {/* Используем кнопку logout из UserMenu */}
             <UserMenu />
           </li>
         </ul>

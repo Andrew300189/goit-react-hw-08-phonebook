@@ -1,10 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
-import { PersistGate } from 'redux-persist/integration/react';
-import { persistor, store } from '../../redux/store';
-import { loginSuccess } from '../../redux/authSlice';
 import Navigation from './Navigation';
 import UserMenu from '../UserMenu/UserMenu';
 import Registration from '../Registration/Registration';
