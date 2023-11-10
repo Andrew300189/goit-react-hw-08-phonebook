@@ -2,10 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-axios.defaults.baseURL = 'https://connections-api.herokuapp.com/';
+axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
 // Utility to add JWT
-const setAuthHeader = token => {
+export const setAuthHeader = token => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
@@ -15,51 +15,35 @@ const clearAuthHeader = () => {
 };
 
 export const register = createAsyncThunk(
-    'auth/register',
-    async (credentials, thunkAPI) => {
-      try {
-        const res = await axios.post('/users/signup', credentials);
-        // After successful registration, add the token to the HTTP header
-        setAuthHeader(res.data.token);
-        return res.data;
-      } catch (error) {
-        return thunkAPI.rejectWithValue(error.message);
-      }
+  'auth/register',
+  async (credentials, thunkAPI) => {
+    try {
+      const res = await axios.post('/users/signup', credentials);
+      setAuthHeader(res.data.token);
+      return res.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
-  );
+  }
+);
 
-  const initialState = {
-    user: { name: null, email: null },
-    token: null,
-    isLoggedIn: false,
-    isRefreshing: false,
-  };
+const initialState = {
+  user: { name: null, email: null },
+  token: null,
+  isLoggedIn: false,
+  isRefreshing: false,
+};
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  extraReducers:(builder)=>{
-builder.addCase(register.fulfilled, (state,action)=>{
-    state.user = action.payload.user;
+  extraReducers: builder => {
+    builder.addCase(register.fulfilled, (state, action) => {
+      state.user = action.payload.user;
       state.token = action.payload.token;
       state.isLoggedIn = true;
-})
-  }
-
-  
+    });
+  },
 });
-
-export const {
-  loginStart,
-  loginSuccess,
-  loginFailure,
-  logoutStart,
-  logoutSuccess,
-  logoutFailure,
-  updateUserStart,
-  updateUserSuccess,
-  updateUserFailure,
-  clearError,
-} = authSlice.actions;
 
 export default authSlice.reducer;

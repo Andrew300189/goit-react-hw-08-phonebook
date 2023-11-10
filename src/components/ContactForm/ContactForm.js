@@ -2,15 +2,16 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addPrivateContact } from '../../redux/contactsSlice';
 import { selectContacts } from 'redux/selectors';
+import ContactList from 'components/ContactList/ContactList';
 
 function ContactForm() {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => selectContacts(state));
+  const contacts = useSelector(state => selectContacts(state));
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
 
     if (name.trim() === '' || number.trim() === '') {
@@ -19,7 +20,7 @@ function ContactForm() {
     }
 
     const isContactExists = contacts.some(
-      (contact) => contact.name === name && contact.number === number
+      contact => contact.name === name && contact.number === number
     );
 
     if (isContactExists) {
@@ -27,16 +28,10 @@ function ContactForm() {
       return;
     }
 
-    dispatch(addPrivateContact({ name, number }))
-      .unwrap()
-      .then(() => {
-        alert('Contact added successfully!');
-        setName('');
-        setNumber('');
-      })
-      .catch((error) => {
-        alert(error.message);
-      });
+    dispatch(addPrivateContact({ name, number }));
+
+    setName('');
+    setNumber('');
   };
 
   return (
@@ -50,7 +45,7 @@ function ContactForm() {
           id="name"
           name="name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={e => setName(e.target.value)}
           className="form-input"
         />
         <label htmlFor="number" className="form-label">
@@ -61,13 +56,14 @@ function ContactForm() {
           id="number"
           name="number"
           value={number}
-          onChange={(e) => setNumber(e.target.value)}
+          onChange={e => setNumber(e.target.value)}
           className="form-input"
         />
         <button type="submit" className="form-button">
           Add contact
         </button>
       </form>
+      <ContactList />
     </div>
   );
 }
