@@ -23,37 +23,25 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div className={styles.form}>
+    <div className={styles.container}>
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <label className={styles.label}>
+      <form onSubmit={handleSubmit} className={styles.form}>
+        <label className={styles.formLabel}>
           Name
-          <input
-            type="text"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
+          <input type="text" value={name} onChange={(e) => setName(e.target.value)} className={styles.formInput} />
         </label>
         <br />
-        <label className={styles.label}>
+        <label className={styles.formLabel}>
           Email
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.formInput} />
         </label>
         <br />
-        <label className={styles.label}>
+        <label className={styles.formLabel}>
           Password
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.formInput} />
         </label>
         <br />
-        <button type="submit" className={styles.button}>
+        <button type="submit" className={styles.formButton}>
           Register
         </button>
       </form>

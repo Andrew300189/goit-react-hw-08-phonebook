@@ -1,11 +1,33 @@
-.form {
-    width: 500px;
-}
-  
-  .label {
+.container {
     display: flex;
     flex-direction: column;
-    margin-bottom: 5px;
-    font-size: 18px;
-}
+    align-items: flex-start;
+    margin-left: 20px;
+  }
   
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 300px;
+    
+  }
+  
+  .formInput {
+    width: 100%;
+    padding: 8px;
+  }
+  
+  .formButton {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  
+  }
+  
+  .formButton:hover {
+    background-color: #45a049;
+  }

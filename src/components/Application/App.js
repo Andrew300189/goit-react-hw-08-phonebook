@@ -2,11 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Navigation from '../Navigation/Navigation';
-import UserMenu from '../UserMenu/UserMenu';
 import Registration from '../Registration/Registration';
 import Login from '../Login/Login';
 import ContactForm from '../ContactForm/ContactForm';
-import HomePage from '../Application/HomePage';
+import HomePage from '../../pages/HomePage';
 import { RestrictedRoute } from 'components/RestrictedRoute/RestrictedRoute';
 import { PrivateRoute } from 'components/PrivateRoute/PrivateRoute';
 

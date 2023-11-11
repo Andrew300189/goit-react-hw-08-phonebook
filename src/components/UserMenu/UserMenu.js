@@ -25,7 +25,7 @@ const UserMenu = () => {
     <div className={styles.userMenuContainer}>
       {isLoggedIn && <p className={styles.welcomeMessage}>Welcome, {userEmail}</p>}
       <button className={styles.logoutButton} onClick={handleLogout}>
-        Logout
+        Log Out
       </button>
     </div>
   );

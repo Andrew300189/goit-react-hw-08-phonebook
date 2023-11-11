@@ -42,20 +42,22 @@ const Login = () => {
   };
 
   return (
-    <div className={styles.form}>
+    <div className={styles.container}>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <label className={styles.label}>
+      <form onSubmit={handleLogin} className={styles.form}>
+        <label className={styles.formLabel}>
           Email
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={styles.formInput} />
         </label>
         <br />
-        <label className={styles.label}>
+        <label className={styles.formLabel}>
           Password
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.formInput} />
         </label>
         <br />
-        <button type="submit" className={styles.button}>Login</button>
+        <button type="submit" className={styles.formButton}>
+          Login
+        </button>
       </form>
     </div>
   );

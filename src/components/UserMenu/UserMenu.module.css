@@ -1,9 +1,24 @@
-/* Add these styles to your CSS module or stylesheet */
-.user-menu-container {
+.userMenuContainer {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
   }
   
-  .welcome-message {
+  .welcomeMessage {
     margin-right: 10px;
+    font-weight: bold;
   }
+  
+  .logoutButton {
+    background-color: #f44336; 
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .logoutButton:hover {
+    background-color: #d32f2f;
+  }
+  
