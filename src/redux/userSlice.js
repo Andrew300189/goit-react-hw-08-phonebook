@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-const BASE_URL = 'https://connections-api.herokuapp.com/docs';
+const BASE_URL = 'https://connections-api.herokuapp.com';
 
 const initialState = {
     currentUser: null,
@@ -37,14 +37,15 @@ export const loginUser = createAsyncThunk('user/loginUser', async (userData) => 
       body: JSON.stringify(userData),
     });
     if (!response.ok) {
-      throw new Error('Failed to login');
+      throw new Error(`Failed to login. Status: ${response.status}`);
     }
     const data = await response.json();
-    return data;
+    return data || {}; 
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(`Login failed: ${error.message}`);
   }
 });
+
 
 export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
   try {
