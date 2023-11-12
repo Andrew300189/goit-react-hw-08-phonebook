@@ -37,15 +37,14 @@ export const loginUser = createAsyncThunk('user/loginUser', async (userData) => 
       body: JSON.stringify(userData),
     });
     if (!response.ok) {
-      throw new Error(`Failed to login. Status: ${response.status}`);
+      throw new Error('Failed to login');
     }
     const data = await response.json();
-    return data || {}; 
+    return data;
   } catch (error) {
-    throw new Error(`Login failed: ${error.message}`);
+    throw new Error(error.message);
   }
 });
-
 
 export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
   try {

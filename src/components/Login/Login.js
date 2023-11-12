@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../redux/userSlice';
 import styles from './Login.module.css';
-import LoginPage from './Redirect';
 
 const Login = () => {
   const history = useNavigate();
@@ -33,7 +32,7 @@ const Login = () => {
 
         console.log(response);
 
-        LoginPage('/contacts');
+        history.push('/contacts'); 
       } else {
         console.error('Login failed. Unexpected response status:', action.error.message);
       }
