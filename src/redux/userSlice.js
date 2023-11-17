@@ -39,6 +39,7 @@ export const loginUser = createAsyncThunk('user/loginUser', async (userData) => 
     if (!response.ok) {
       throw new Error('Failed to login');
     }
+    
     const data = await response.json();
     return data;
   } catch (error) {

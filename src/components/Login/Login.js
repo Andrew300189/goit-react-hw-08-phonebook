@@ -32,7 +32,7 @@ const Login = () => {
 
         console.log(response);
 
-        history.push('/contacts'); 
+        history('/contacts'); 
       } else {
         console.error('Login failed. Unexpected response status:', action.error.message);
       }
