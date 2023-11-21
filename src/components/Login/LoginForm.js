@@ -6,7 +6,7 @@ import styles from './Login.module.css';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const history = useNavigate();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -31,7 +31,7 @@ const LoginForm = () => {
 
         console.log(response);
 
-        history.push('/contacts');
+        navigate('/contacts');
       } else {
         console.error('Login failed. Unexpected response status:', action.error.message);
       }
