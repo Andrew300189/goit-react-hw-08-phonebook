@@ -8,25 +8,6 @@ const initialState = {
     error: null,
 };
 
-export const createUser = createAsyncThunk('user/createUser', async (userData) => {
-  try {
-    const response = await fetch(`${BASE_URL}/users/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    });
-    if (!response.ok) {
-      throw new Error('Failed to create a new user');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-});
-
 export const loginUser = createAsyncThunk('user/loginUser', async (userData) => {
   try {
     const response = await fetch(`${BASE_URL}/users/login`, {
@@ -60,19 +41,6 @@ export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
   }
 });
 
-export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async () => {
-  try {
-    const response = await fetch(`${BASE_URL}/users/current`);
-    if (!response.ok) {
-      throw new Error('Failed to get current user information');
-    }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    throw new Error(error.message);
-  }
-});
-
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -83,18 +51,7 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(createUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(createUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.currentUser = action.payload;
-      })
-      .addCase(createUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
-      })
+      
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -116,18 +73,6 @@ const userSlice = createSlice({
         state.currentUser = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
-        state.isLoading = false;
-        state.error = action.error.message;
-      })
-      .addCase(getCurrentUser.pending, (state) => {
-        state.isLoading = true;
-        state.error = null;
-      })
-      .addCase(getCurrentUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.currentUser = action.payload;
-      })
-      .addCase(getCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
