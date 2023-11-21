@@ -41,6 +41,19 @@ export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
   }
 });
 
+export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async () => {
+  try {
+    const response = await fetch(`${BASE_URL}/users/current`);
+    if (!response.ok) {
+      throw new Error('Failed to get current user information');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
 const userSlice = createSlice({
   name: 'user',
   initialState,
@@ -73,6 +86,18 @@ const userSlice = createSlice({
         state.currentUser = null;
       })
       .addCase(logoutUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getCurrentUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.currentUser = action.payload;
+      })
+      .addCase(getCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
