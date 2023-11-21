@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import Navigation from '../Navigation/Navigation';
 import Registration from '../Registration/Registration';
 import Login from '../Login/Login';
@@ -10,7 +9,6 @@ import { RestrictedRoute } from 'components/RestrictedRoute/RestrictedRoute';
 import { PrivateRoute } from 'components/PrivateRoute/PrivateRoute';
 
 const App = () => {
-  const dispatch = useDispatch();
 
   return (
     <>
