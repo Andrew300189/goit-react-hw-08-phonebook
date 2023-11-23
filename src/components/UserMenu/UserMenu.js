@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserEmail, selectIsLoggedIn } from '../../redux/selectors';
-import { logoutUser, clearCurrentUser } from '../../redux/userSlice'; 
+import { logoutUser, clearCurrentUser } from '../../redux/authSlice'; 
 import { useNavigate } from 'react-router-dom';
 import styles from './UserMenu.module.css';
 

@@ -1,13 +1,58 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getCurrentUser, loginUser, logoutUser } from './userSlice';
 
 axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
-export const setAuthHeader = token => {
+export const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
+
+const initialState = {
+  currentUser: null,
+  isLoading: false,
+  error: null,
+  user: {
+    name: null,
+    email: null,
+  },
+  token: null,
+  isLoggedIn: false,
+  isRefreshing: false,
+};
+
+export const loginUser = createAsyncThunk('user/loginUser', async (userData) => {
+  try {
+    const response = await axios.post('/users/login', userData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
+export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
+  try {
+    const response = await axios.post('/users/logout');
+
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
+
+export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async () => {
+  try {
+    const response = await axios.get('/users/current');
+
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+});
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -22,41 +67,62 @@ export const register = createAsyncThunk(
   }
 );
 
-const initialState = {
-  user: { name: null, email: null },
-  token: null,
-  isLoggedIn: false,
-  isRefreshing: false,
-};
-
 const authSlice = createSlice({
-  name: 'auth',
+  name: 'user',
   initialState,
+  reducers: {
+    clearCurrentUser(state) {
+      state.currentUser = null;
+    },
+  },
   extraReducers: (builder) => {
-    builder.addCase(register.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isLoggedIn = true;
-    });
-
-    builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isLoggedIn = true;
-    });
-
-    builder.addCase(logoutUser.fulfilled, (state) => {
-      state.user = initialState.user;
-      state.token = initialState.token;
-      state.isLoggedIn = false;
-    });
-
-    builder.addCase(getCurrentUser.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.token = action.payload.token;
-      state.isLoggedIn = true;
-    });
+    builder
+      .addCase(loginUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = initialState.user;
+        state.token = initialState.token;
+        state.isLoggedIn = false;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(getCurrentUser.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(getCurrentUser.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
+      })
+      .addCase(getCurrentUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
+      });
   },
 });
 
+export const { clearCurrentUser } = authSlice.actions;
 export default authSlice.reducer;
