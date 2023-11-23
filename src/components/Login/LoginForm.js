@@ -39,7 +39,7 @@ const LoginForm = () => {
 
   return (
     <div className={styles.container}>
-      <h2>Login</h2>
+      <h2 className={styles.login}>Login</h2>
       <form onSubmit={handleSubmit} className={styles.form}>
         <label className={styles.formLabel}>
           Email

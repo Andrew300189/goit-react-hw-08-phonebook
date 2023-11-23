@@ -10,7 +10,10 @@
   flex-direction: column;
   align-items: flex-start;
   width: 300px;
-  
+}
+
+.login{
+  margin-bottom: 15px;
 }
 
 .formInput {

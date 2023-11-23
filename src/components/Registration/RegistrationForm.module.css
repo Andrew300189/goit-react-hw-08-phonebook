@@ -10,9 +10,12 @@
     flex-direction: column;
     align-items: flex-start;
     width: 300px;
-    
   }
   
+  .register{
+    margin-bottom: 15px;
+  }
+
   .formInput {
     width: 100%;
     padding: 8px;
