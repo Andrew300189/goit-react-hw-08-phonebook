@@ -11,13 +11,13 @@
     align-items: flex-start;
     width: 300px;
   }
-  
+
   .register{
     margin-bottom: 15px;
   }
 
   .formInput {
-    width: 100%;
+    width: 250px;
     padding: 8px;
   }
   
