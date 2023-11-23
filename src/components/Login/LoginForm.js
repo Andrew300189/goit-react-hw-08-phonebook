@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { loginUser } from 'redux/authSlice';
-import { useNavigate } from 'react-router-dom';
 import styles from './Login.module.css';
 
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -31,7 +29,6 @@ const LoginForm = () => {
 
         console.log(response);
 
-        navigate('/contacts');
       } else {
         console.error('Login failed. Unexpected response status:', action.error.message);
       }
