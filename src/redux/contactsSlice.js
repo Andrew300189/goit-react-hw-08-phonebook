@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { setAuthHeader } from './authSlice';
+import { normalizeName } from './selectors';
 
 export const fetchContacts = createAsyncThunk(
   'privateContacts/fetchAll',
@@ -22,7 +23,13 @@ export const addContact = createAsyncThunk(
     try {
       const token = thunkAPI.getState().auth.token;
       setAuthHeader(token);
-      const response = await axios.post(`/contacts`, contact);
+
+      const normalizedContact = {
+        ...contact,
+        name: normalizeName(contact.name),
+      };
+
+      const response = await axios.post(`/contacts`, normalizedContact);
       return response.data;
     } catch (error) {
       throw new Error(error.message);
