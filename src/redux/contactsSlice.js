@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { setAuthHeader } from './authSlice';
 
-export const fetchPrivateContacts = createAsyncThunk(
+export const fetchContacts = createAsyncThunk(
   'privateContacts/fetchAll',
   async (_, thunkAPI) => {
     try {
@@ -16,7 +16,7 @@ export const fetchPrivateContacts = createAsyncThunk(
   }
 );
 
-export const addPrivateContact = createAsyncThunk(
+export const addContact = createAsyncThunk(
   'privateContacts/addContact',
   async (contact, thunkAPI) => {
     try {
@@ -30,12 +30,11 @@ export const addPrivateContact = createAsyncThunk(
   }
 );
 
-export const deletePrivateContact = createAsyncThunk(
+export const deleteContact = createAsyncThunk(
   'privateContacts/deleteContact',
-  async id => {
+  async (id) => {
     try {
       await axios.delete(`/contacts/${id}`);
-
       return id;
     } catch (error) {
       throw new Error(error.message);
@@ -43,7 +42,7 @@ export const deletePrivateContact = createAsyncThunk(
   }
 );
 
-export const updatePrivateContact = createAsyncThunk(
+export const updateContact = createAsyncThunk(
   'privateContacts/updateContact',
   async ({ id, updatedData }) => {
     try {
@@ -55,70 +54,76 @@ export const updatePrivateContact = createAsyncThunk(
   }
 );
 
-const privateContactsSlice = createSlice({
+const contactsSlice = createSlice({
   name: 'privateContacts',
   initialState: {
     isLoading: false,
     items: [],
     error: null,
+    filter: '',
   },
-  reducers: {},
-  extraReducers: builder => {
+  reducers: {
+    updateFilter(state, action) {
+      state.filter = action.payload;
+    },
+  },
+  extraReducers: (builder) => {
     builder
-      .addCase(fetchPrivateContacts.pending, state => {
+      .addCase(fetchContacts.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(fetchPrivateContacts.fulfilled, (state, action) => {
+      .addCase(fetchContacts.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = action.payload;
       })
-      .addCase(fetchPrivateContacts.rejected, (state, action) => {
+      .addCase(fetchContacts.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
-      .addCase(addPrivateContact.pending, state => {
+      .addCase(addContact.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(addPrivateContact.fulfilled, (state, action) => {
+      .addCase(addContact.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items.push(action.payload);
       })
-      .addCase(addPrivateContact.rejected, (state, action) => {
+      .addCase(addContact.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
-      .addCase(deletePrivateContact.pending, state => {
+      .addCase(deleteContact.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(deletePrivateContact.fulfilled, (state, action) => {
+      .addCase(deleteContact.fulfilled, (state, action) => {
         state.isLoading = false;
         state.items = state.items.filter(
-          contact => contact.id !== action.payload
+          (contact) => contact.id !== action.payload
         );
       })
-      .addCase(deletePrivateContact.rejected, (state, action) => {
+      .addCase(deleteContact.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
-      .addCase(updatePrivateContact.pending, state => {
+      .addCase(updateContact.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-      .addCase(updatePrivateContact.fulfilled, (state, action) => {
+      .addCase(updateContact.fulfilled, (state, action) => {
         state.isLoading = false;
         const updatedContact = action.payload;
-        state.items = state.items.map(contact => {
+        state.items = state.items.map((contact) => {
           return contact.id === updatedContact.id ? updatedContact : contact;
         });
       })
-      .addCase(updatePrivateContact.rejected, (state, action) => {
+      .addCase(updateContact.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       });
   },
 });
 
-export default privateContactsSlice.reducer;
+export const { updateFilter } = contactsSlice.actions;
+export default contactsSlice.reducer;

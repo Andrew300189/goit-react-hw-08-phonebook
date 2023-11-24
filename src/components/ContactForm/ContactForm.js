@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addPrivateContact } from '../../redux/contactsSlice';
+import { addContact } from '../../redux/contactsSlice';
 import { selectContacts } from 'redux/selectors';
 import ContactList from 'components/ContactList/ContactList';
 import styles from './ContactForm.module.css';
+import Filter from 'components/Filter/Filter';
 
 function ContactForm() {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ function ContactForm() {
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,14 +31,10 @@ function ContactForm() {
       return;
     }
 
-    dispatch(addPrivateContact({ name, number }));
+    dispatch(addContact({ name, number }));
 
     setName('');
     setNumber('');
-  };
-
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
   };
 
   const filteredContacts = contacts.filter((contact) =>
@@ -72,17 +69,7 @@ function ContactForm() {
         <button type="submit" className={styles.formButton}>
           Add contact
         </button>
-        <label htmlFor="search" className={styles.formLabel}>
-          Search
-        </label>
-        <input
-          type="text"
-          id="search"
-          name="search"
-          value={searchTerm}
-          onChange={handleSearch}
-          className={styles.formInput}
-        />
+        <Filter/>
       </form>
       <ContactList contacts={filteredContacts} />
     </div>
