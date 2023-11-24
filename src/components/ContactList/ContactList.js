@@ -10,7 +10,6 @@ import styles from './ContactList.module.css';
 function ContactList() {
   const dispatch = useDispatch();
   const contacts = useSelector(selectContacts);
-
   useEffect(() => {
     dispatch(fetchPrivateContacts());
   }, [dispatch]);

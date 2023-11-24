@@ -7,12 +7,13 @@ import styles from './ContactForm.module.css';
 
 function ContactForm() {
   const dispatch = useDispatch();
-  const contacts = useSelector(state => selectContacts(state));
+  const contacts = useSelector((state) => selectContacts(state));
 
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (name.trim() === '' || number.trim() === '') {
@@ -21,7 +22,7 @@ function ContactForm() {
     }
 
     const isContactExists = contacts.some(
-      contact => contact.name === name && contact.number === number
+      (contact) => contact.name === name && contact.number === number
     );
 
     if (isContactExists) {
@@ -35,6 +36,14 @@ function ContactForm() {
     setNumber('');
   };
 
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredContacts = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className={styles.container}>
       <form onSubmit={handleSubmit} className={styles.form}>
@@ -46,7 +55,7 @@ function ContactForm() {
           id="name"
           name="name"
           value={name}
-          onChange={e => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value)}
           className={styles.formInput}
         />
         <label htmlFor="number" className={styles.formLabel}>
@@ -57,14 +66,25 @@ function ContactForm() {
           id="number"
           name="number"
           value={number}
-          onChange={e => setNumber(e.target.value)}
+          onChange={(e) => setNumber(e.target.value)}
           className={styles.formInput}
         />
         <button type="submit" className={styles.formButton}>
           Add contact
         </button>
+        <label htmlFor="search" className={styles.formLabel}>
+          Search
+        </label>
+        <input
+          type="text"
+          id="search"
+          name="search"
+          value={searchTerm}
+          onChange={handleSearch}
+          className={styles.formInput}
+        />
       </form>
-      <ContactList />
+      <ContactList contacts={filteredContacts} />
     </div>
   );
 }
