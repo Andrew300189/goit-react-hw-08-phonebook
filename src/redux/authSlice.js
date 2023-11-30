@@ -44,15 +44,43 @@ export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
   }
 });
 
-export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async () => {
-  try {
-    const response = await axios.get('/users/current');
 
-    return response.data;
+const api = {
+  fetchCurrentUser: async () => {
+    try {
+      const response = await axios.get('/users/current');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching current user:', error.message);
+      throw new Error(error.message);
+    }
+  }
+};
+
+export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async (_, thunkAPI) => {
+  try {
+    const state = thunkAPI.getState();
+    const persistToken = state.user.token;
+
+    if (persistToken === null) {
+      return thunkAPI.rejectWithValue();
+    }
+
+    setAuthHeader(persistToken);
+
+    try {
+      const data = await api.fetchCurrentUser();
+      return data;
+    } catch (error) {
+      console.error(error.message);
+      throw new Error(error.message);
+    }
   } catch (error) {
+    console.error(error.message);
     throw new Error(error.message);
   }
 });
+
 
 export const register = createAsyncThunk(
   'auth/register',
