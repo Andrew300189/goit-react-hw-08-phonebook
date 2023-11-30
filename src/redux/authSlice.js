@@ -5,11 +5,7 @@ axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
 export const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-  localStorage.setItem('authToken', token);
 };
-
-
-const storedToken = localStorage.getItem('authToken');
 
 const initialState = {
   currentUser: null,
@@ -19,8 +15,8 @@ const initialState = {
     name: null,
     email: null,
   },
-  token: storedToken || null,
-  isLoggedIn: !!storedToken,
+  token: null,
+  isLoggedIn: false,
   isRefreshing: false,
 };
 
@@ -48,23 +44,10 @@ export const logoutUser = createAsyncThunk('user/logoutUser', async () => {
   }
 });
 
-
-const api = {
-  fetchCurrentUser: async () => {
-    try {
-      const response = await axios.get('/users/current');
-      return response.data;
-    } catch (error) {
-      console.error('Error fetching current user:', error.message);
-      throw new Error(error.message);
-    }
-  }
-};
-
 export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async (_, thunkAPI) => {
   try {
     const state = thunkAPI.getState();
-    const persistToken = state.user.token;
+    const persistToken = state.auth.token;
 
     if (persistToken === null) {
       return thunkAPI.rejectWithValue();
@@ -73,18 +56,17 @@ export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async (_, 
     setAuthHeader(persistToken);
 
     try {
-      const data = await api.fetchCurrentUser();
-      return data;
+      const response = await axios.get('/users/current');
+      return response.data;
     } catch (error) {
-      console.error(error.message);
+      console.log(error.message);
       throw new Error(error.message);
     }
   } catch (error) {
-    console.error(error.message);
+    console.log(error.message);
     throw new Error(error.message);
   }
 });
-
 
 export const register = createAsyncThunk(
   'auth/register',
@@ -127,7 +109,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
-        localStorage.removeItem('authToken');
         state.user = initialState.user;
         state.token = initialState.token;
         state.isLoggedIn = false;
