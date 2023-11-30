@@ -5,7 +5,11 @@ axios.defaults.baseURL = 'https://connections-api.herokuapp.com';
 
 export const setAuthHeader = (token) => {
   axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  localStorage.setItem('authToken', token);
 };
+
+
+const storedToken = localStorage.getItem('authToken');
 
 const initialState = {
   currentUser: null,
@@ -15,8 +19,8 @@ const initialState = {
     name: null,
     email: null,
   },
-  token: null,
-  isLoggedIn: false,
+  token: storedToken || null,
+  isLoggedIn: !!storedToken,
   isRefreshing: false,
 };
 
@@ -123,6 +127,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logoutUser.fulfilled, (state) => {
+        localStorage.removeItem('authToken');
         state.user = initialState.user;
         state.token = initialState.token;
         state.isLoggedIn = false;
