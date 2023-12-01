@@ -60,7 +60,7 @@ const api = {
 export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async (_, thunkAPI) => {
   try {
     const state = thunkAPI.getState();
-    const persistToken = state.user.token;
+    const persistToken = state.auth.token;
 
     if (persistToken === null) {
       return thunkAPI.rejectWithValue();
