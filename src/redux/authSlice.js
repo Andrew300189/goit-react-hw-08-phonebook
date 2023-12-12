@@ -70,7 +70,7 @@ export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async (_, 
 
     try {
       const data = await api.fetchCurrentUser();
-      return data;
+      return data.user;
     } catch (error) {
       console.error(error.message);
       throw new Error(error.message);
