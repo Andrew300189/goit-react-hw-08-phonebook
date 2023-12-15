@@ -10,10 +10,12 @@ import { RestrictedRoute } from 'components/RestrictedRoute/RestrictedRoute';
 import { PrivateRoute } from 'components/PrivateRoute/PrivateRoute';
 import { getCurrentUser } from 'redux/authSlice';
 import Loader from 'components/Loader/Loader';
+import NotFoundPage from 'components/NotFoundPage/NotFoundPage';
+
 
 const App = () => {
   const dispatch = useDispatch();
-  const fetchCurrentUser = useSelector(state => state.auth.fetchCurrentUser);
+  const fetchCurrentUser = useSelector(state => state.auth.isLoading);
 
   useEffect(() => {
     dispatch(getCurrentUser());
@@ -53,8 +55,9 @@ const App = () => {
                 />
               }
             />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
-        ) : null}
+        ) : <div>Loading...</div>}
       </Suspense>
     </>
   );

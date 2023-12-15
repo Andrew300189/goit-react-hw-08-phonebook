@@ -70,7 +70,7 @@ export const getCurrentUser = createAsyncThunk('user/getCurrentUser', async (_, 
 
     try {
       const data = await api.fetchCurrentUser();
-      return data.user;
+      return data;
     } catch (error) {
       console.error(error.message);
       throw new Error(error.message);
@@ -113,6 +113,7 @@ const authSlice = createSlice({
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true;
+        state.isLoading = false;
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -126,6 +127,7 @@ const authSlice = createSlice({
         state.user = initialState.user;
         state.token = initialState.token;
         state.isLoggedIn = false;
+        state.isLoading = false;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -136,9 +138,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(getCurrentUser.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.user = action.payload;
         state.isLoggedIn = true;
+        state.isLoading = false;
       })
       .addCase(getCurrentUser.rejected, (state, action) => {
         state.isLoading = false;
